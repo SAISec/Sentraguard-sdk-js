@@ -1,0 +1,53 @@
+name: node-sdk-publish
+
+# Publishes @sentraguard/sdk to npm on a `v*` tag.
+# Uses npm OIDC Trusted Publishing (provenance) — no NPM_TOKEN needed.
+# Configure the trusted publisher on npmjs.com for this package + repo + workflow,
+# and create the `npm` GitHub Environment with a required reviewer.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+defaults:
+  run:
+    working-directory: node-sdk
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+      - run: npm install
+      - run: npm run lint && npm run typecheck && npm test
+      - run: npm run build
+      - run: npm pack
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tarball
+          path: node-sdk/*.tgz
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      id-token: write # OIDC trusted publishing + provenance
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+      - run: npm install
+      - run: npm run build
+      # npm >= 11.5.1 performs OIDC trusted publishing automatically when a
+      # trusted publisher is configured; provenance is attached via the
+      # publishConfig in package.json.
+      - run: npm publish

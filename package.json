@@ -1,0 +1,96 @@
+{
+  "name": "@sentraguard/sdk",
+  "version": "0.1.0",
+  "description": "TypeScript/JavaScript SDK and drop-in LLM guardrail for the SentraGuard backend (OpenAI / Anthropic / Gemini compatible).",
+  "type": "module",
+  "license": "MIT",
+  "author": "Sovereign AI Security Labs",
+  "homepage": "https://github.com/SAISec/Sentraguard-sdk-js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SAISec/Sentraguard-sdk-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SAISec/Sentraguard-sdk-js/issues"
+  },
+  "keywords": [
+    "sentraguard",
+    "llm",
+    "guardrail",
+    "security",
+    "openai",
+    "anthropic",
+    "gemini",
+    "prompt-injection"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "sentraguard": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./openai": {
+      "types": "./dist/integrations/openai.d.ts",
+      "import": "./dist/integrations/openai.js",
+      "require": "./dist/integrations/openai.cjs"
+    },
+    "./anthropic": {
+      "types": "./dist/integrations/anthropic.d.ts",
+      "import": "./dist/integrations/anthropic.js",
+      "require": "./dist/integrations/anthropic.cjs"
+    },
+    "./gemini": {
+      "types": "./dist/integrations/gemini.d.ts",
+      "import": "./dist/integrations/gemini.js",
+      "require": "./dist/integrations/gemini.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "peerDependencies": {
+    "@anthropic-ai/sdk": ">=0.30.0",
+    "@google/genai": ">=0.3.0",
+    "openai": ">=4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "openai": { "optional": true },
+    "@anthropic-ai/sdk": { "optional": true },
+    "@google/genai": { "optional": true }
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^2.1.0"
+  }
+}
