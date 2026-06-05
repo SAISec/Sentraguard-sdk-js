@@ -1,6 +1,6 @@
 {
   "name": "@sentraguard/sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TypeScript/JavaScript SDK and drop-in LLM guardrail for the SentraGuard backend (OpenAI / Anthropic / Gemini compatible).",
   "type": "module",
   "license": "MIT",
