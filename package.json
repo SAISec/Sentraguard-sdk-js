@@ -71,7 +71,8 @@
     "prepublishOnly": "npm run build"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "peerDependencies": {
     "@anthropic-ai/sdk": ">=0.30.0",

@@ -1,8 +1,15 @@
 name: publish
 
-# Publishes @sentraguard/sdk to npm on a `v*` tag using an NPM_TOKEN secret.
-# (v0.1.0 first release uses a token; later versions can switch to OIDC
-# trusted publishing + provenance once a trusted publisher is configured.)
+# Publishes @sentraguard/sdk to npm on a `v*` tag using npm OIDC Trusted
+# Publishing (with provenance) — no NPM_TOKEN needed.
+#
+# One-time setup on npmjs.com (Package settings -> Trusted Publisher):
+#   Provider: GitHub Actions
+#   Organization/owner: SAISec
+#   Repository: Sentraguard-sdk-js
+#   Workflow filename: publish.yml
+#   Environment: npm
+# Requires npm >= 11.5.1 in the publish job (upgraded below).
 
 on:
   push:
@@ -31,14 +38,16 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment: npm
+    permissions:
+      id-token: write # OIDC trusted publishing + provenance
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
+      - run: npm install -g npm@latest   # trusted publishing needs npm >= 11.5.1
       - run: npm install
       - run: npm run build
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm publish
