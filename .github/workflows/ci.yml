@@ -1,16 +1,9 @@
-name: node-sdk-ci
+name: ci
 
 on:
   push:
-    paths:
-      - "node-sdk/**"
+    branches: ["main"]
   pull_request:
-    paths:
-      - "node-sdk/**"
-
-defaults:
-  run:
-    working-directory: node-sdk
 
 jobs:
   test:
